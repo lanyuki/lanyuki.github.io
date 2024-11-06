@@ -103,4 +103,4 @@ theme: next
 deploy:
   type: git
   repo: https://github.com/lanyuki/lanyuki.github.io.git
-  branch: gh-pages
+  branch: master
