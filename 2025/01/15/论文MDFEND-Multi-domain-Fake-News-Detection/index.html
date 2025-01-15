@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 7.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/2.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/1.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/3.png">
-  <link rel="mask-icon" href="/images/4.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -23,20 +23,20 @@
   <meta name="description" content="MDFEND: Multi-domain Fake News Detection MDFEND：多领域假新闻检测  中科院 acm CIKM 21年10月相关工作： 1、传播模式用于结构建模 2、另一些研究工作联合使用文本和视觉特征用于多模态建模 3、采用了最小最大博弈的思想来提取事件不变(域不变)特征，但忽略了域特定的特征 4、Silver等人提出联合保存特定领域和跨领域的知识来检测来自不同领域">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文MDFEND: Multi-domain Fake News Detection">
-<meta property="og:url" content="http://lanyuki.github.io/2025/01/15/%E5%81%87%E6%96%B0%E9%97%BB%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/index.html">
+<meta property="og:url" content="http://lanyuki.github.io/2025/01/15/%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/index.html">
 <meta property="og:site_name" content="lanking&#39;s website">
 <meta property="og:description" content="MDFEND: Multi-domain Fake News Detection MDFEND：多领域假新闻检测  中科院 acm CIKM 21年10月相关工作： 1、传播模式用于结构建模 2、另一些研究工作联合使用文本和视觉特征用于多模态建模 3、采用了最小最大博弈的思想来提取事件不变(域不变)特征，但忽略了域特定的特征 4、Silver等人提出联合保存特定领域和跨领域的知识来检测来自不同领域">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.helloimg.com/i/2025/01/15/678755dcc124d.png">
 <meta property="og:image" content="https://www.helloimg.com/i/2025/01/15/6787560d5e246.png">
 <meta property="article:published_time" content="2025-01-15T06:29:14.000Z">
-<meta property="article:modified_time" content="2025-01-15T09:49:02.457Z">
+<meta property="article:modified_time" content="2025-01-15T06:37:07.416Z">
 <meta property="article:author" content="lanking">
 <meta property="article:tag" content="fakenews detect">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.helloimg.com/i/2025/01/15/678755dcc124d.png">
 
-<link rel="canonical" href="http://lanyuki.github.io/2025/01/15/%E5%81%87%E6%96%B0%E9%97%BB%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/">
+<link rel="canonical" href="http://lanyuki.github.io/2025/01/15/%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/">
 
 
 <script id="page-configurations">
@@ -164,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://lanyuki.github.io/2025/01/15/%E5%81%87%E6%96%B0%E9%97%BB%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/">
+    <link itemprop="mainEntityOfPage" href="http://lanyuki.github.io/2025/01/15/%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/i.jpg">
@@ -188,7 +188,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-01-15 14:29:14 / 修改时间：17:49:02" itemprop="dateCreated datePublished" datetime="2025-01-15T14:29:14+08:00">2025-01-15</time>
+              <time title="创建时间：2025-01-15 14:29:14 / 修改时间：14:37:07" itemprop="dateCreated datePublished" datetime="2025-01-15T14:29:14+08:00">2025-01-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,8 +209,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2025/01/15/%E5%81%87%E6%96%B0%E9%97%BB%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/15/%E5%81%87%E6%96%B0%E9%97%BB%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/01/15/%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/15/%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -230,8 +230,6 @@
 <p>2、另一些研究工作联合使用文本和视觉特征用于多模态建模</p>
 <p>3、采用了最小最大博弈的思想来提取事件不变(域不变)特征，但忽略了域特定的特征</p>
 <p>4、Silver等人提出联合保存特定领域和跨领域的知识来检测来自不同领域的虚假新闻，但是他们没有充分利用领域信息。</p>
-<span id="more"></span>
-
 <p><strong>工作内容：</strong></p>
 <p>1、数据集：对于虚假数据，我们收集了微博社区管理中心官方判定为虚假信息的新闻片段[ 4 ]。构建了一个weibo21数据集包括科学、军事、教育、灾害、政治、健康、金融、娱乐和社会域。每个域都包含新闻内容、发布时间戳、对应的图片和评论，包含来自 4,488 个不同域的 4,640 条假新闻和 9 条真实新闻。</p>
 <p>2、用Berttokenlization 做tokenlization，添加CLS和SEP，即用于分类的全局特征和句子分割。所有的embedding经过Mask-Attantion后获得句子级的embedding   es。为了处理专门的域，采用了一个可学习的vector   ed，作为域的embedding</p>
@@ -303,13 +301,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2025/01/15/%E9%87%87%E6%A0%B7-sampling%E7%AD%96%E7%95%A5/" rel="prev" title="采样/选词策略">
+    <a href="/2025/01/15/%E9%87%87%E6%A0%B7-%E9%80%89%E8%AF%8D%E7%AD%96%E7%95%A5/" rel="prev" title="采样/选词策略">
       <i class="fa fa-chevron-left"></i> 采样/选词策略
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/01/15/git%E5%91%BD%E4%BB%A4-hexok-ssh%E8%BF%9E%E6%8E%A5/" rel="next" title="git命令/hexok/ssh连接">
-      git命令/hexok/ssh连接 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -385,7 +380,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -398,7 +393,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

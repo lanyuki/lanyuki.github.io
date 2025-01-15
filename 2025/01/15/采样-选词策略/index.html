@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 7.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/2.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/1.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/3.png">
-  <link rel="mask-icon" href="/images/4.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -20,15 +20,20 @@
     var CONFIG = {"hostname":"lanyuki.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="lanking&#39;s website">
-<meta property="og:url" content="http://lanyuki.github.io/categories/%E5%9F%BA%E7%A1%80/index.html">
+  <meta name="description" content="在语言模型生成概率分布后，采取哪种策略来选择下一个token,显得极其重要。常见的策略有： Greedy Search (Maximization) Beam Search Temperature Sampling Top-K Sampling Top-P Sampling (Nucleus sampling) Greedy Search解码（贪婪）     Greedy search方法的思想较">
+<meta property="og:type" content="article">
+<meta property="og:title" content="采样&#x2F;选词策略">
+<meta property="og:url" content="http://lanyuki.github.io/2025/01/15/%E9%87%87%E6%A0%B7-%E9%80%89%E8%AF%8D%E7%AD%96%E7%95%A5/index.html">
 <meta property="og:site_name" content="lanking&#39;s website">
+<meta property="og:description" content="在语言模型生成概率分布后，采取哪种策略来选择下一个token,显得极其重要。常见的策略有： Greedy Search (Maximization) Beam Search Temperature Sampling Top-K Sampling Top-P Sampling (Nucleus sampling) Greedy Search解码（贪婪）     Greedy search方法的思想较">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-15T06:18:28.000Z">
+<meta property="article:modified_time" content="2025-01-15T06:19:43.715Z">
 <meta property="article:author" content="lanking">
+<meta property="article:tag" content="大模型">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://lanyuki.github.io/categories/%E5%9F%BA%E7%A1%80/">
+<link rel="canonical" href="http://lanyuki.github.io/2025/01/15/%E9%87%87%E6%A0%B7-%E9%80%89%E8%AF%8D%E7%AD%96%E7%95%A5/">
 
 
 <script id="page-configurations">
@@ -36,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: 基础 | lanking's website</title>
+  <title>采样/选词策略 | lanking's website</title>
   
 
 
@@ -149,77 +154,135 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lanyuki.github.io/2025/01/15/%E9%87%87%E6%A0%B7-%E9%80%89%E8%AF%8D%E7%AD%96%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/i.jpg">
+      <meta itemprop="name" content="lanking">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lanking's website">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          采样/选词策略
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-15 14:18:28 / 修改时间：14:19:43" itemprop="dateCreated datePublished" datetime="2025-01-15T14:18:28+08:00">2025-01-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI-learning/" itemprop="url" rel="index"><span itemprop="name">AI-learning</span></a>
+                </span>
+            </span>
+
+          
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">基础
-          <small>分类</small>
-        </h2>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/15/%E9%87%87%E6%A0%B7-%E9%80%89%E8%AF%8D%E7%AD%96%E7%95%A5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/15/%E9%87%87%E6%A0%B7-%E9%80%89%E8%AF%8D%E7%AD%96%E7%95%A5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-01-15T18:07:13+08:00"
-              content="2025-01-15">
-          01-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/01/15/git%E5%91%BD%E4%BB%A4-hexok-ssh%E8%BF%9E%E6%8E%A5/" itemprop="url">
-            <span itemprop="name">git命令/hexok/ssh连接</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-01-15T14:17:36+08:00"
-              content="2025-01-15">
-          01-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/01/15/python%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/" itemprop="url">
-            <span itemprop="name">python版本管理相关命令</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+        <p>在语言模型生成概率分布后，采取哪种策略来选择下一个token,显得极其重要。常见的策略有：</p>
+<p>Greedy Search (Maximization)</p>
+<p>Beam Search</p>
+<p>Temperature Sampling</p>
+<p>Top-K Sampling</p>
+<p>Top-P Sampling (Nucleus sampling)</p>
+<p>Greedy Search解码（贪婪）</p>
+<p>    Greedy search方法的思想较为简单，就是直接选择概率分布中概率最大的token作为当前解码出来的词。 但是，该方法的问题在于，如果我们总是选择概率最大的词，将会生成很多重复的句子，此方法也是基于统计学的方法。</p>
+<p>Beam Search 解码</p>
+<p>    另一种比较流行的解码方法叫beam search，该方法是对greedy search的扩展版本，返回一系列最有可能的输出序列。</p>
+<p>    和greedy search选择可能性最大的构成序列不同，beam search在n</p>
+<p>步时，生成n+1步的所有可能组成，并从中选择k个概率最大的组合，其中k为指定的搜索参数。</p>
+<p>    我们在开始的位置不用随机选择，而是选择K个最可能在开始位置的词语作为序列的第一个词。</p>
+<p>    当K取1时，即为Greedy Search，而在大多数机器翻译的任务中 K一般取值5-10。当K较大时，往往会带来较好的结果，因为保留更多的选择性，更可能带来最佳的组合，相应的，也会增加计算成本和解码速度。</p>
+<p>    举例说明上述表述。首先，定义一个函数，该函数在给定一个序列（假设长度为N, 词汇表长度为V）的概率分布(矩阵，N x V)，以及搜索参数K时，得到解码结果。在每一个step，每一个候选子序列( candidate sequence)扩展所有可能的下一个子token，然后按照score进行排序，并选择score最大的K个子序列，作为当前step的解码结果。重复上述过程，直到迭代结束。</p>
+<p>    一般来说，概率值时较小的数值，经过一些列连乘后，会更小，为防止下溢（underflowing the floating point numbers),将其计算转换为取其对数，然后相加的过程。</p>
+<p>TEMPERATURE 采样</p>
+<p>    Temperature sampling的想法源于热力统计学的概念，貌似是跟熵有一些关系具体没有过多了解，主要就是温度高往往意味着更容易是低能量状态。在概率模型中， logits 代表能量值，将其送入softmax函数钱，除以temperature值，得到最终的采样概率分布。</p>
+<p>TOP-K采样</p>
+<p>TOP-K也是基于概率的生成，主要思路个人理解是二次贪婪，可以理解为是在第一次的时候贪婪不彻底，选出k个（多个），然后在将这k个token重新进行取概率，然后再选择概率大的，选出该词作为输出。</p>
+<p>TOP-P采样</p>
+<p>top-p的方式与之前的采样方式都有所不同，之前可以理解为就是低概率以及中概率的词都直接不要，但是top-p选择token时是只要这个词的累计概率超过一个阈值p，就加入备选，这样使得中低概率的词也能被选进来，增加中小概率词的生成概率。</p>
+<p>最后再说说个人对于这些选词方法的“偏门”的理解，就是这种选词方法不仅是在单纯的生成当中可能会使用，在于一些大模型安全领域也有一些使用。特别是在某些黑盒模型的文本生成检测当中，由于模型大概率也是使用了上述的选token方法，所以可以采用在多次的同样的文本生成时，统计一些模型的特征词汇出现的频率，来判断是否是由ai生成的文本，也算是新时代的图灵测试。</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag"># 大模型</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/15/python%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/" rel="prev" title="python版本管理相关命令">
+      <i class="fa fa-chevron-left"></i> python版本管理相关命令
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/15/%E8%AE%BA%E6%96%87MDFEND-Multi-domain-Fake-News-Detection/" rel="next" title="论文MDFEND: Multi-domain Fake News Detection">
+      论文MDFEND: Multi-domain Fake News Detection <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -281,7 +344,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -294,7 +357,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
