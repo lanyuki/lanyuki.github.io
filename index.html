@@ -273,7 +273,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-01-15 14:18:28 / 修改时间：17:37:35" itemprop="dateCreated datePublished" datetime="2025-01-15T14:18:28+08:00">2025-01-15</time>
+              <time title="创建时间：2025-01-15 14:18:28 / 修改时间：17:50:08" itemprop="dateCreated datePublished" datetime="2025-01-15T14:18:28+08:00">2025-01-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -316,24 +316,14 @@
 <p>Temperature Sampling</p>
 <p>Top-K Sampling</p>
 <p>Top-P Sampling (Nucleus sampling)</p>
-<p>Greedy Search解码（贪婪）</p>
-<p>    Greedy search方法的思想较为简单，就是直接选择概率分布中概率最大的token作为当前解码出来的词。 但是，该方法的问题在于，如果我们总是选择概率最大的词，将会生成很多重复的句子，此方法也是基于统计学的方法。</p>
-<p>Beam Search 解码</p>
-<p>    另一种比较流行的解码方法叫beam search，该方法是对greedy search的扩展版本，返回一系列最有可能的输出序列。</p>
-<p>    和greedy search选择可能性最大的构成序列不同，beam search在n</p>
-<p>步时，生成n+1步的所有可能组成，并从中选择k个概率最大的组合，其中k为指定的搜索参数。</p>
-<p>    我们在开始的位置不用随机选择，而是选择K个最可能在开始位置的词语作为序列的第一个词。</p>
-<p>    当K取1时，即为Greedy Search，而在大多数机器翻译的任务中 K一般取值5-10。当K较大时，往往会带来较好的结果，因为保留更多的选择性，更可能带来最佳的组合，相应的，也会增加计算成本和解码速度。</p>
-<p>    举例说明上述表述。首先，定义一个函数，该函数在给定一个序列（假设长度为N, 词汇表长度为V）的概率分布(矩阵，N x V)，以及搜索参数K时，得到解码结果。在每一个step，每一个候选子序列( candidate sequence)扩展所有可能的下一个子token，然后按照score进行排序，并选择score最大的K个子序列，作为当前step的解码结果。重复上述过程，直到迭代结束。</p>
-<p>    一般来说，概率值时较小的数值，经过一些列连乘后，会更小，为防止下溢（underflowing the floating point numbers),将其计算转换为取其对数，然后相加的过程。</p>
-<p>TEMPERATURE 采样</p>
-<p>    Temperature sampling的想法源于热力统计学的概念，貌似是跟熵有一些关系具体没有过多了解，主要就是温度高往往意味着更容易是低能量状态。在概率模型中， logits 代表能量值，将其送入softmax函数钱，除以temperature值，得到最终的采样概率分布。</p>
-<p>TOP-K采样</p>
-<p>TOP-K也是基于概率的生成，主要思路个人理解是二次贪婪，可以理解为是在第一次的时候贪婪不彻底，选出k个（多个），然后在将这k个token重新进行取概率，然后再选择概率大的，选出该词作为输出。</p>
-<p>TOP-P采样</p>
-<p>top-p的方式与之前的采样方式都有所不同，之前可以理解为就是低概率以及中概率的词都直接不要，但是top-p选择token时是只要这个词的累计概率超过一个阈值p，就加入备选，这样使得中低概率的词也能被选进来，增加中小概率词的生成概率。</p>
-<p>最后再说说个人对于这些选词方法的“偏门”的理解，就是这种选词方法不仅是在单纯的生成当中可能会使用，在于一些大模型安全领域也有一些使用。特别是在某些黑盒模型的文本生成检测当中，由于模型大概率也是使用了上述的选token方法，所以可以采用在多次的同样的文本生成时，统计一些模型的特征词汇出现的频率，来判断是否是由ai生成的文本，也算是新时代的图灵测试。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/01/15/%E9%87%87%E6%A0%B7-sampling%E7%AD%96%E7%95%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -377,7 +367,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-01-15 14:17:36 / 修改时间：14:25:41" itemprop="dateCreated datePublished" datetime="2025-01-15T14:17:36+08:00">2025-01-15</time>
+              <time title="创建时间：2025-01-15 14:17:36 / 修改时间：17:51:52" itemprop="dateCreated datePublished" datetime="2025-01-15T14:17:36+08:00">2025-01-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -415,20 +405,14 @@
 
       
           <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a><strong>Python</strong></h2><p>设定python版本</p>
-<p>sudo update-alternatives –install &#x2F;home&#x2F;a88&#x2F;anaconda3&#x2F;bin&#x2F;python python &#x2F;home&#x2F;a88&#x2F;anaconda3&#x2F;bin&#x2F;python3.8 2</p>
-<p>挑选python版本</p>
-<p>sudo update-alternatives –config python</p>
-<h2 id="Conda"><a href="#Conda" class="headerlink" title="Conda"></a><strong>Conda</strong></h2><p>切换镜像源</p>
-<p>Pip install pytorch-ranger&#x3D;&#x3D;0.1.1</p>
-<p>清华</p>
-<p> -i  <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
-<p>Conda的图形化界面，linux</p>
-<p>anaconda-navigator</p>
-<p>pip install -e .[metrics]</p>
-<h2 id="清理conda历史缓存包"><a href="#清理conda历史缓存包" class="headerlink" title="清理conda历史缓存包"></a><strong>清理conda历史缓存包</strong></h2><h2 id="du-sh-root-miniconda3-pkgs-rm-rf-root-miniconda3-pkgs"><a href="#du-sh-root-miniconda3-pkgs-rm-rf-root-miniconda3-pkgs" class="headerlink" title="du -sh &#x2F;root&#x2F;miniconda3&#x2F;pkgs&#x2F; &amp;&amp; rm -rf &#x2F;root&#x2F;miniconda3&#x2F;pkgs&#x2F;*"></a><strong>du -sh &#x2F;root&#x2F;miniconda3&#x2F;pkgs&#x2F; &amp;&amp; rm -rf &#x2F;root&#x2F;miniconda3&#x2F;pkgs&#x2F;*</strong></h2><h2 id="Nvida驱动-cuda"><a href="#Nvida驱动-cuda" class="headerlink" title="Nvida驱动&#x2F;cuda"></a><strong>Nvida驱动&#x2F;cuda</strong></h2><h3 id="查看nvidia驱动"><a href="#查看nvidia驱动" class="headerlink" title="查看nvidia驱动"></a><strong>查看nvidia驱动</strong></h3><p>module avail</p>
-<p>&#x2F;usr&#x2F;bin&#x2F;java</p>
-<p>&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.262.b10-1.el7.x86_64&#x2F;jre&#x2F;bin&#x2F;java</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/01/15/python%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -472,7 +456,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-01-15 14:16:02 / 修改时间：17:35:46" itemprop="dateCreated datePublished" datetime="2025-01-15T14:16:02+08:00">2025-01-15</time>
+              <time title="创建时间：2025-01-15 14:16:02 / 修改时间：17:52:45" itemprop="dateCreated datePublished" datetime="2025-01-15T14:16:02+08:00">2025-01-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -510,73 +494,15 @@
 
       
           <img src="https://img.picui.cn/free/2024/11/05/6729848ce493e.png" alt="屏幕截图 2024-07-18 172310.png" title="屏幕截图 2024-07-18 172310.png" />
-Vit模型，把一个个小图片过一个线性投影层，原来的图片像素点拉直（比如是一个128\*20\*20的图像，变成一个128\*400），乘上那个线性投影层层（w）变成一个个向量(粉色的)（即原来的128\*400现在变成了一个128\*1的向量）。模仿nlp,在每个位置都加一个位置向量，紫色加粉色就是一个位置加图像，两个进行位加，这个就代表这个图片的整体信息。最前面加一个cls，代表一个图片，然后采用mlp进行识别。 
-
-<img src="https://img.picui.cn/free/2024/11/05/6729843fdc064.png" alt="屏幕截图 2024-07-18 173356.png" title="屏幕截图 2024-07-18 173356.png" />
-这个yolos模型，左侧相当于一个vit模型，将所有图片方面的信息转化成向量，右侧则是一些候选目标（向量），通过transformer结构进行解码，最后输出置信度，类别，位置。
-
-<p>这整个模型就类似T5-BART模型</p>
-<p>引申T5-BART</p>
-<img src="https://img.picui.cn/free/2024/11/05/6729843da2988.png" alt="屏幕截图 2024-07-18 174716.png" title="屏幕截图 2024-07-18 174716.png" />
-这个是bert模型，在BERT源码中，在预测位置可以使用哪些信息是由一个称为attention\_mask的参数来控制的。BERT最重要的预训练任务是预测masked token，并使用整个输入来获取更完全的信息以进行更准确的预测。这对于那些允许利用位置之后的信息来预测位置的任务是有效的，但是对于诸如文本生成之类的任务则没有多大用处，这些对位置的预测只能取决于先前生成的单词。
-
-<img src="https://img.picui.cn/free/2024/11/05/6729843d988c3.png" alt="屏幕截图 2024-07-18 174726.png" title="屏幕截图 2024-07-18 174726.png" />
-这个是GPT模型。GPT预训练任务使用的是autoregressive的思想，使用已经解码出的信息来预测下一个位置。该种模式对于生成任务更为有效，而对于那些可以使用全局输入来得到输出的下游任务则比较差劲。
-
-<img src="https://img.picui.cn/free/2024/11/05/6729843d9788e.png" alt="屏幕截图 2024-07-18 174635.png" title="屏幕截图 2024-07-18 174635.png" />
-这个则是BART模型，主要就是把BERT和GPT模型组在了一起。这么看，那个yolos和BART模型确实有点像。
-
-<img src="https://img.picui.cn/free/2024/11/05/672985fdc3607.png" alt="屏幕截图 2024-07-18 175933.png" title="屏幕截图 2024-07-18 175933.png" />
-Clip模型，如图，图上信息很多。此时正负样本的数量不一样，此时的负样本需要采样N个出来，所采用的策略是采取与正样本相似度较高的负样本，就是内积趋向为1的负样本（相似度低说明区分得很好，没有必要再去区分。而这里的相似度是采用余弦做的）
-
-<img src="https://img.picui.cn/free/2024/11/05/672986424a85d.png" alt="屏幕截图 2024-07-19 170225.png" title="屏幕截图 2024-07-19 170225.png" />
-上面一步，生成一个图像的压缩的token：
-
-<p>将图像放入encoder，通过one-hot把原来可能很大的模型压缩成较小的图片token</p>
-<p>下面一步，生成一个文本对应的token:</p>
-<p>文本加入位置信息，通过自回归编码（相当于GPT），然后进行预测</p>
-<img src="https://img.picui.cn/free/2024/11/05/6729867453fa1.png" alt="屏幕截图 2024-07-19 170821.png" title="屏幕截图 2024-07-19 170821.png" />
-左侧的蓝色就是个GPT，按概率采样，选取好几个token，然后不同的token生成不一样的图片，最后再用CLIP做文本与图片之间的相似度比较，选取最大或者概率采样
-
-<p>（紫色这块的解码策略很多，beam search，贪婪，topk，topp）</p>
-<p>图文理解：</p>
-<p>1、文字token加图像token</p>
-<p>2、文字embeding加图像embeding</p>
-<p>扩散模型的神经网络</p>
-<img src="https://img.picui.cn/free/2024/11/05/67298730051fb.png" alt="图片1.png" title="图片1.png" />
-
-<p>主要干的事就是把原来的正态分布映射到另一个分布上，使得生成的分布跟真实分布相似。</p>
-<p>扩散学习：<br><img src="https://img.picui.cn/free/2024/11/05/672987619b0d8.png" alt="图片2.png" title="图片2.png" /><br>β是0-1，然后根号这块也是0-1</p>
-<p>其中，β是模糊度，β为0，根号这块就是1，完全模糊</p>
-<p>β为1，就是Xt-1</p>
-<p>一步一步加噪声，但是实操可以通过数学公式直接一步到位</p>
-<p>数学推演：<br><img src="https://img.picui.cn/free/2024/11/05/672987ce194fb.png" alt="图片3.png" title="图片3.png" /><br>可以把原来的Xt直接由X0表示出来，一步到位</p>
-<p>目标任务：<br><img src="https://img.picui.cn/free/2024/11/05/672987ce84a08.png" alt="图片4.png" title="图片4.png" /></p>
-<p>简化任务：<br><img src="https://img.picui.cn/free/2024/11/05/6729887696acb.png" alt="图片5.png" title="图片5.png" /></p>
-<p>又因为噪音图片是原始图片加上噪声所得到的，所以可以采用噪声图片减去原始图片来得到噪声</p>
-<p>通过学习，把t时刻的噪声（最左侧的）学习到，然后通过下面的公式，退出t-1时刻的噪声图像<br><img src="https://img.picui.cn/free/2024/11/05/67298887a01db.png" alt="图片6.png" title="图片6.png" /><br><img src="https://img.picui.cn/free/2024/11/05/67298902305b5.png" alt="图片7.png" title="图片7.png" /><br><img src="https://img.picui.cn/free/2024/11/05/67298900d125c.png" alt="图片8.png" title="图片8.png" /></p>
-<p>左边模型训练部分：</p>
-<p>1首先是把一个图像不断加噪音到最后（总共有T个时刻）</p>
-<p>2然后是采样一个t时刻，希望模型能 够学会Xt—Xt-1的过程</p>
-<p>3那一个部分其实就是模型，根号里面的epsilon ε就是学习的目标</p>
-<p>右边的训练部分:</p>
-<p>1纯噪音的然后一步步反推回去</p>
-<p>多模态：blip</p>
-<p>最左边是一个图像的encoder，把图片变成一个向量，然后再把文字也变成一个向量，通过ITC）比较相似度，生成KV，输入到Cross<br>Attention里面，其中的Q来自nlp，两者输入到ITM，检查是否相符</p>
-<p>（<strong>ITC (Image-Text Contrastive<br>Learning)</strong>：<strong>目的</strong>：使模型能够学习图像和文本之间的对齐关系，促进模型理解哪些图像和哪些文本是匹配的。<strong>实现</strong>：通过对比损失（contrastive<br>loss）来训练模型，使得匹配的图像-文本对的特征在嵌入空间中距离更近，而不匹配的对的特征距离更远。通过使用一个图像编码器和一个文本编码器将图像和文本分别编码为向量，然后计算它们之间的相似度。<strong>损失函数</strong>：对比损失函数通常采用交叉熵损失）</p>
-<p>（<strong>ITM (Image-Text<br>Matching)</strong>：<strong>目的</strong>：训练模型判断一对图像和文本是否匹配。<strong>实现</strong>：在图像和文本特征的基础上添加一个分类头，用于二分类任务（匹配和不匹配）。模型需要预测给定的图像和文本是否是匹配的<strong>损失函数</strong>：使用二分类交叉熵损失）</p>
-<p><strong>LM (Language<br>Modeling)</strong>：<strong>目的</strong>：训练模型生成描述图像的文本，提升模型的文本生成能力。<strong>实现</strong>：使用语言模型的损失函数来优化模型，使得模型能够根据图像生成自然语言描述。这通常包括使用一个语言模型（如GPT）来生成文本，并计算生成文本与参考文本之间的损失。损<strong>失函数</strong>：使用自回归语言建模的交叉熵损失</p>
-<p><strong>ITC</strong>：通过对比学习，使模型能够在嵌入空间中对齐图像和文本。</p>
-<p><strong>ITM</strong>：通过匹配任务，增强模型判断图像和文本是否匹配的能 力。</p>
-<p><strong>LM</strong>：通过语言建模任务，提升模型生成文本描述的能力</p>
-<p>Clip</p>
-<p>上面可以是Bert，GPT等等，下面是Resnet，VGG等</p>
-<p>正负样本是直接在batchsize里面构造出来的，如右图，batchsize随机，训练样本随机。</p>
-<p>左侧只需要输入图像文本对。Batchsize太小，使得负样本过少,训练效果不佳</p>
-<p>Batchsize太大，当分的类别较少的时候，负样本不准。比如文本分的第一个类别是狗，然后图片给的是不同类型的狗，会导致负样本学习错误。</p>
-<p>Glip</p>
-<p>Glip模型依靠文本的encoder进行编码，然后用图像再进行编码，然后通过文本图像对融合，通过文本与图像，做多模态的多头atten，进行文本与图像的相似度检测，看相似度是否高。</p>
-
+Vit模型，把一个个小图片过一个线性投影层，原来的图片像素点拉直（比如是一个128\*20\*20的图像，变成一个128\*400），乘上那个线性投影层层（w）变成一个个向量(粉色的)（即原来的128\*400现在变成了一个128\*1的向量）。模仿nlp,在每个位置都加一个位置向量，紫色加粉色就是一个位置加图像，两个进行位加，这个就代表这个图片的整体信息。最前面加一个cls，代表一个图片，然后采用mlp进行识别。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/01/15/VIT-BART-T5-yolos%E7%AE%80%E5%8D%95%E5%8E%9F%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
