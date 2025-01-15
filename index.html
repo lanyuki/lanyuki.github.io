@@ -155,6 +155,145 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lanyuki.github.io/2025/01/15/F1-score%E7%9B%B8%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/i.jpg">
+      <meta itemprop="name" content="lanking">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lanking's website">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/15/F1-score%E7%9B%B8%E5%85%B3/" class="post-title-link" itemprop="url">F1 score相关</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-15 18:41:19 / 修改时间：18:42:39" itemprop="dateCreated datePublished" datetime="2025-01-15T18:41:19+08:00">2025-01-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI-learning/" itemprop="url" rel="index"><span itemprop="name">AI-learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/15/F1-score%E7%9B%B8%E5%85%B3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/15/F1-score%E7%9B%B8%E5%85%B3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=F1%E5%88%86%E6%95%B0&amp;spm=1001.2101.3001.7020">F1分数</a>（F1-score）是分类问题的一个衡量指标。一些多分类问题的机器学习竞赛，常常将F1-score作为最终测评的方法。它是精确率和召回率的调和平均数，最大为1，最小为0。</p>
+<p>TP（True Positive）：实际真，预测真</p>
+<p>TN (True Negative) ：实际真。预测假</p>
+<p>FN（False Negative）：实际假，预测真</p>
+<p>FP（False Positive）：实际假，预测假</p>
+<p>在机器学习和信息检索领域，<strong>精确率 (Precision)</strong>、<strong>召回率 (Recall)</strong> 和 <strong>F1 评分 (F1 Score)</strong> 是衡量分类模型性能的重要指标。它们尤其在处理类别不平衡的问题时特别有用。下面是这几个概念的详细解释：</p>
+<p>1. <strong>精确率 (Precision)</strong></p>
+<p>精确率衡量的是<strong>预测为正例的样本中有多少是实际正例</strong>。也就是说，它告诉你模型在预测为正例时的准确度。</p>
+<p><strong>公式：</strong></p>
+<p>Precision&#x3D;True Positives (TP)True Positives (TP)+False Positives (FP)\text{Precision} &#x3D; \frac{\text{True Positives (TP)}}{\text{True Positives (TP)} + \text{False Positives (FP)}}Precision&#x3D;True Positives (TP)+False Positives (FP)True Positives (TP)​</p>
+<ul>
+<li><strong>True Positives (TP)</strong>：正确预测为正例的样本数量。</li>
+<li><strong>False Positives (FP)</strong>：错误预测为正例的样本数量。</li>
+</ul>
+<p><strong>含义：</strong></p>
+<ul>
+<li>精确率越高，表示模型将更多的负样本错误分类为正样本的情况较少，即假阳性较少。</li>
+<li>精确率高意味着模型在判断正类时比较谨慎，减少了误报的情况。</li>
+</ul>
+<p><strong>例如：</strong> 假设你有一个垃圾邮件检测模型：</p>
+<ul>
+<li>如果模型预测了一些邮件是垃圾邮件，精确率告诉你这些被预测为垃圾邮件的邮件中，实际有多少是垃圾邮件。</li>
+</ul>
+<h3 id="2-召回率-Recall"><a href="#2-召回率-Recall" class="headerlink" title="2. 召回率 (Recall)"></a>2. <strong>召回率 (Recall)</strong></h3><p>召回率衡量的是<strong>实际正例中有多少被正确地预测为正例</strong>。它告诉你模型捕获到的正类样本的比例。</p>
+<p><strong>公式：</strong></p>
+<p>Recall&#x3D;True Positives (TP)True Positives (TP)+False Negatives (FN)\text{Recall} &#x3D; \frac{\text{True Positives (TP)}}{\text{True Positives (TP)} + \text{False Negatives (FN)}}Recall&#x3D;True Positives (TP)+False Negatives (FN)True Positives (TP)​</p>
+<ul>
+<li><strong>True Positives (TP)</strong>：正确预测为正例的样本数量。</li>
+<li><strong>False Negatives (FN)</strong>：错误预测为负例的样本数量。</li>
+</ul>
+<p><strong>含义：</strong></p>
+<ul>
+<li>召回率越高，表示模型能够找到更多的正类样本，减少了漏检的情况。</li>
+<li>召回率高意味着模型在正类样本的识别上表现更好，但可能会牺牲精确率（即产生更多假阳性）。</li>
+</ul>
+<p><strong>例如：</strong> 继续以垃圾邮件检测为例：</p>
+<ul>
+<li>如果你想要确保不会漏掉任何垃圾邮件，召回率告诉你，在所有实际的垃圾邮件中，有多少被模型正确地识别出来。</li>
+</ul>
+<h3 id="3-F1-评分-F1-Score"><a href="#3-F1-评分-F1-Score" class="headerlink" title="3. F1 评分 (F1 Score)"></a>3. <strong>F1 评分 (F1 Score)</strong></h3><p>F1 评分是<strong>精确率</strong>和<strong>召回率</strong>的调和平均数。它综合了这两个指标，特别适用于精确率和召回率之间存在权衡时。</p>
+<p><strong>公式：</strong></p>
+<p>F1 Score&#x3D;2×Precision×RecallPrecision+Recall\text{F1 Score} &#x3D; 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}F1 Score&#x3D;2×Precision+RecallPrecision×Recall​</p>
+<p>F1 评分考虑了精确率和召回率的平衡：</p>
+<ul>
+<li>如果精确率或召回率较低，F1 评分也会较低。</li>
+<li>F1 评分越高，表示模型在精确率和召回率上都表现较好。</li>
+</ul>
+<p><strong>含义：</strong></p>
+<ul>
+<li>F1 评分是精确率和召回率的调和平均数，它尤其适合在类别不平衡的情况下评估模型表现，因为它避免了仅依赖精确率或召回率可能导致的误导。</li>
+<li>如果你希望在精确率和召回率之间取得平衡，那么 F1 评分是一个很好的评估标准。</li>
+</ul>
+<p><strong>例如：</strong> 假设你的模型在垃圾邮件检测中，精确率高但召回率低，F1 评分会告诉你模型的综合表现。如果精确率和召回率都较高，F1 评分会很高，表示模型表现较好。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li><strong>精确率 (Precision)</strong>：预测为正例的样本中，真正是正例的比例。高精确率意味着少的假阳性。</li>
+<li><strong>召回率 (Recall)</strong>：实际正例中，成功被模型预测为正例的比例。高召回率意味着少的假阴性。</li>
+<li><strong>F1 评分 (F1 Score)</strong>：精确率和召回率的调和平均数，用来综合衡量模型的精确度和召回能力。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://lanyuki.github.io/2025/01/15/git%E5%91%BD%E4%BB%A4-hexok-ssh%E8%BF%9E%E6%8E%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -768,7 +907,7 @@ Vit模型，把一个个小图片过一个线性投影层，原来的图片像�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -781,7 +920,7 @@ Vit模型，把一个个小图片过一个线性投影层，原来的图片像�
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
