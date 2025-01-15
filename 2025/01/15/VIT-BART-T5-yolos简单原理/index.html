@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/2.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/3.png">
+  <link rel="mask-icon" href="/images/4.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lanyuki.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Vit模型，把一个个小图片过一个线性投影层，原来的图片像素点拉直（比如是一个128\*20\*20的图像，变成一个128\*400），乘上那个线性投影层层（w）变成一个个向量(粉色的)（即原来的128\*400现在变成了一个128\*1的向量）。模仿nlp,在每个位置都加一个位置向量，紫色加粉色就是一个位置加图像，两个进行位加，这个就代表这个图片的整体信息。最前面加一个cls，代表一个图片，然后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VIT-BART-T5-yolos原理简述">
+<meta property="og:url" content="http://lanyuki.github.io/2025/01/15/VIT-BART-T5-yolos%E7%AE%80%E5%8D%95%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="lanking&#39;s website">
+<meta property="og:description" content="Vit模型，把一个个小图片过一个线性投影层，原来的图片像素点拉直（比如是一个128\*20\*20的图像，变成一个128\*400），乘上那个线性投影层层（w）变成一个个向量(粉色的)（即原来的128\*400现在变成了一个128\*1的向量）。模仿nlp,在每个位置都加一个位置向量，紫色加粉色就是一个位置加图像，两个进行位加，这个就代表这个图片的整体信息。最前面加一个cls，代表一个图片，然后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/6729848ce493e.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/6729843fdc064.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/6729843da2988.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/6729843d988c3.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/6729843d9788e.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/672985fdc3607.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/672986424a85d.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/6729867453fa1.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/67298730051fb.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/672987619b0d8.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/672987ce194fb.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/672987ce84a08.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/6729887696acb.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/67298887a01db.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/67298902305b5.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/05/67298900d125c.png">
+<meta property="article:published_time" content="2025-01-15T06:16:02.000Z">
+<meta property="article:modified_time" content="2025-01-15T09:35:46.281Z">
+<meta property="article:author" content="lanking">
+<meta property="article:tag" content="-多模态 -encoder2decoder">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picui.cn/free/2024/11/05/6729848ce493e.png">
+
+<link rel="canonical" href="http://lanyuki.github.io/2025/01/15/VIT-BART-T5-yolos%E7%AE%80%E5%8D%95%E5%8E%9F%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>VIT-BART-T5-yolos原理简述 | lanking's website</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">lanking's website</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://lanyuki.github.io/2025/01/15/VIT-BART-T5-yolos%E7%AE%80%E5%8D%95%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/i.jpg">
+      <meta itemprop="name" content="lanking">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lanking's website">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VIT-BART-T5-yolos原理简述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-15 14:16:02 / 修改时间：17:35:46" itemprop="dateCreated datePublished" datetime="2025-01-15T14:16:02+08:00">2025-01-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI-learning/" itemprop="url" rel="index"><span itemprop="name">AI-learning</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/15/VIT-BART-T5-yolos%E7%AE%80%E5%8D%95%E5%8E%9F%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/15/VIT-BART-T5-yolos%E7%AE%80%E5%8D%95%E5%8E%9F%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img src="https://img.picui.cn/free/2024/11/05/6729848ce493e.png" alt="屏幕截图 2024-07-18 172310.png" title="屏幕截图 2024-07-18 172310.png" />
+Vit模型，把一个个小图片过一个线性投影层，原来的图片像素点拉直（比如是一个128\*20\*20的图像，变成一个128\*400），乘上那个线性投影层层（w）变成一个个向量(粉色的)（即原来的128\*400现在变成了一个128\*1的向量）。模仿nlp,在每个位置都加一个位置向量，紫色加粉色就是一个位置加图像，两个进行位加，这个就代表这个图片的整体信息。最前面加一个cls，代表一个图片，然后采用mlp进行识别。 
+
+<img src="https://img.picui.cn/free/2024/11/05/6729843fdc064.png" alt="屏幕截图 2024-07-18 173356.png" title="屏幕截图 2024-07-18 173356.png" />
+这个yolos模型，左侧相当于一个vit模型，将所有图片方面的信息转化成向量，右侧则是一些候选目标（向量），通过transformer结构进行解码，最后输出置信度，类别，位置。
+
+<p>这整个模型就类似T5-BART模型</p>
+<p>引申T5-BART</p>
+<img src="https://img.picui.cn/free/2024/11/05/6729843da2988.png" alt="屏幕截图 2024-07-18 174716.png" title="屏幕截图 2024-07-18 174716.png" />
+这个是bert模型，在BERT源码中，在预测位置可以使用哪些信息是由一个称为attention\_mask的参数来控制的。BERT最重要的预训练任务是预测masked token，并使用整个输入来获取更完全的信息以进行更准确的预测。这对于那些允许利用位置之后的信息来预测位置的任务是有效的，但是对于诸如文本生成之类的任务则没有多大用处，这些对位置的预测只能取决于先前生成的单词。
+
+<img src="https://img.picui.cn/free/2024/11/05/6729843d988c3.png" alt="屏幕截图 2024-07-18 174726.png" title="屏幕截图 2024-07-18 174726.png" />
+这个是GPT模型。GPT预训练任务使用的是autoregressive的思想，使用已经解码出的信息来预测下一个位置。该种模式对于生成任务更为有效，而对于那些可以使用全局输入来得到输出的下游任务则比较差劲。
+
+<img src="https://img.picui.cn/free/2024/11/05/6729843d9788e.png" alt="屏幕截图 2024-07-18 174635.png" title="屏幕截图 2024-07-18 174635.png" />
+这个则是BART模型，主要就是把BERT和GPT模型组在了一起。这么看，那个yolos和BART模型确实有点像。
+
+<img src="https://img.picui.cn/free/2024/11/05/672985fdc3607.png" alt="屏幕截图 2024-07-18 175933.png" title="屏幕截图 2024-07-18 175933.png" />
+Clip模型，如图，图上信息很多。此时正负样本的数量不一样，此时的负样本需要采样N个出来，所采用的策略是采取与正样本相似度较高的负样本，就是内积趋向为1的负样本（相似度低说明区分得很好，没有必要再去区分。而这里的相似度是采用余弦做的）
+
+<img src="https://img.picui.cn/free/2024/11/05/672986424a85d.png" alt="屏幕截图 2024-07-19 170225.png" title="屏幕截图 2024-07-19 170225.png" />
+上面一步，生成一个图像的压缩的token：
+
+<p>将图像放入encoder，通过one-hot把原来可能很大的模型压缩成较小的图片token</p>
+<p>下面一步，生成一个文本对应的token:</p>
+<p>文本加入位置信息，通过自回归编码（相当于GPT），然后进行预测</p>
+<img src="https://img.picui.cn/free/2024/11/05/6729867453fa1.png" alt="屏幕截图 2024-07-19 170821.png" title="屏幕截图 2024-07-19 170821.png" />
+左侧的蓝色就是个GPT，按概率采样，选取好几个token，然后不同的token生成不一样的图片，最后再用CLIP做文本与图片之间的相似度比较，选取最大或者概率采样
+
+<p>（紫色这块的解码策略很多，beam search，贪婪，topk，topp）</p>
+<p>图文理解：</p>
+<p>1、文字token加图像token</p>
+<p>2、文字embeding加图像embeding</p>
+<p>扩散模型的神经网络</p>
+<img src="https://img.picui.cn/free/2024/11/05/67298730051fb.png" alt="图片1.png" title="图片1.png" />
+
+<p>主要干的事就是把原来的正态分布映射到另一个分布上，使得生成的分布跟真实分布相似。</p>
+<p>扩散学习：<br><img src="https://img.picui.cn/free/2024/11/05/672987619b0d8.png" alt="图片2.png" title="图片2.png" /><br>β是0-1，然后根号这块也是0-1</p>
+<p>其中，β是模糊度，β为0，根号这块就是1，完全模糊</p>
+<p>β为1，就是Xt-1</p>
+<p>一步一步加噪声，但是实操可以通过数学公式直接一步到位</p>
+<p>数学推演：<br><img src="https://img.picui.cn/free/2024/11/05/672987ce194fb.png" alt="图片3.png" title="图片3.png" /><br>可以把原来的Xt直接由X0表示出来，一步到位</p>
+<p>目标任务：<br><img src="https://img.picui.cn/free/2024/11/05/672987ce84a08.png" alt="图片4.png" title="图片4.png" /></p>
+<p>简化任务：<br><img src="https://img.picui.cn/free/2024/11/05/6729887696acb.png" alt="图片5.png" title="图片5.png" /></p>
+<p>又因为噪音图片是原始图片加上噪声所得到的，所以可以采用噪声图片减去原始图片来得到噪声</p>
+<p>通过学习，把t时刻的噪声（最左侧的）学习到，然后通过下面的公式，退出t-1时刻的噪声图像<br><img src="https://img.picui.cn/free/2024/11/05/67298887a01db.png" alt="图片6.png" title="图片6.png" /><br><img src="https://img.picui.cn/free/2024/11/05/67298902305b5.png" alt="图片7.png" title="图片7.png" /><br><img src="https://img.picui.cn/free/2024/11/05/67298900d125c.png" alt="图片8.png" title="图片8.png" /></p>
+<p>左边模型训练部分：</p>
+<p>1首先是把一个图像不断加噪音到最后（总共有T个时刻）</p>
+<p>2然后是采样一个t时刻，希望模型能 够学会Xt—Xt-1的过程</p>
+<p>3那一个部分其实就是模型，根号里面的epsilon ε就是学习的目标</p>
+<p>右边的训练部分:</p>
+<p>1纯噪音的然后一步步反推回去</p>
+<p>多模态：blip</p>
+<p>最左边是一个图像的encoder，把图片变成一个向量，然后再把文字也变成一个向量，通过ITC）比较相似度，生成KV，输入到Cross<br>Attention里面，其中的Q来自nlp，两者输入到ITM，检查是否相符</p>
+<p>（<strong>ITC (Image-Text Contrastive<br>Learning)</strong>：<strong>目的</strong>：使模型能够学习图像和文本之间的对齐关系，促进模型理解哪些图像和哪些文本是匹配的。<strong>实现</strong>：通过对比损失（contrastive<br>loss）来训练模型，使得匹配的图像-文本对的特征在嵌入空间中距离更近，而不匹配的对的特征距离更远。通过使用一个图像编码器和一个文本编码器将图像和文本分别编码为向量，然后计算它们之间的相似度。<strong>损失函数</strong>：对比损失函数通常采用交叉熵损失）</p>
+<p>（<strong>ITM (Image-Text<br>Matching)</strong>：<strong>目的</strong>：训练模型判断一对图像和文本是否匹配。<strong>实现</strong>：在图像和文本特征的基础上添加一个分类头，用于二分类任务（匹配和不匹配）。模型需要预测给定的图像和文本是否是匹配的<strong>损失函数</strong>：使用二分类交叉熵损失）</p>
+<p><strong>LM (Language<br>Modeling)</strong>：<strong>目的</strong>：训练模型生成描述图像的文本，提升模型的文本生成能力。<strong>实现</strong>：使用语言模型的损失函数来优化模型，使得模型能够根据图像生成自然语言描述。这通常包括使用一个语言模型（如GPT）来生成文本，并计算生成文本与参考文本之间的损失。损<strong>失函数</strong>：使用自回归语言建模的交叉熵损失</p>
+<p><strong>ITC</strong>：通过对比学习，使模型能够在嵌入空间中对齐图像和文本。</p>
+<p><strong>ITM</strong>：通过匹配任务，增强模型判断图像和文本是否匹配的能 力。</p>
+<p><strong>LM</strong>：通过语言建模任务，提升模型生成文本描述的能力</p>
+<p>Clip</p>
+<p>上面可以是Bert，GPT等等，下面是Resnet，VGG等</p>
+<p>正负样本是直接在batchsize里面构造出来的，如右图，batchsize随机，训练样本随机。</p>
+<p>左侧只需要输入图像文本对。Batchsize太小，使得负样本过少,训练效果不佳</p>
+<p>Batchsize太大，当分的类别较少的时候，负样本不准。比如文本分的第一个类别是狗，然后图片给的是不同类型的狗，会导致负样本学习错误。</p>
+<p>Glip</p>
+<p>Glip模型依靠文本的encoder进行编码，然后用图像再进行编码，然后通过文本图像对融合，通过文本与图像，做多模态的多头atten，进行文本与图像的相似度检测，看相似度是否高。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81-encoder2decoder/" rel="tag"># -多模态 -encoder2decoder</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/11/04/%E5%85%B3%E4%BA%8E%E7%BD%91%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%9D/" rel="prev" title="关于本网站的一些话">
+      <i class="fa fa-chevron-left"></i> 关于本网站的一些话
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/15/python%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/" rel="next" title="python版本管理相关命令">
+      python版本管理相关命令 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lanking"
+      src="/images/i.jpg">
+  <p class="site-author-name" itemprop="name">lanking</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://lanyuki56@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;lanyuki56@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://paperswithcode.com/" title="https:&#x2F;&#x2F;paperswithcode.com&#x2F;" rel="noopener" target="_blank">paper with code</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://oi-wiki.org/" title="https:&#x2F;&#x2F;oi-wiki.org&#x2F;" rel="noopener" target="_blank">oiwiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://csdiy.wiki/" title="https:&#x2F;&#x2F;csdiy.wiki&#x2F;" rel="noopener" target="_blank">cs自学指南（参考）</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.runoob.com/java/java-object-classes.html" title="https:&#x2F;&#x2F;www.runoob.com&#x2F;java&#x2F;java-object-classes.html" rel="noopener" target="_blank">java中文文档</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://speech.ee.ntu.edu.tw/~hylee/dlhlp/2020-spring.php" title="https:&#x2F;&#x2F;speech.ee.ntu.edu.tw&#x2F;~hylee&#x2F;dlhlp&#x2F;2020-spring.php" rel="noopener" target="_blank">李宏毅老师课程</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://spaces.ac.cn/" title="https:&#x2F;&#x2F;spaces.ac.cn&#x2F;" rel="noopener" target="_blank">科学空间</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/" title="https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;help&#x2F;anaconda&#x2F;" rel="noopener" target="_blank">清华大学镜像站</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lanking</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'sPtbpZNZalcANGrruhmBJbJ5-gzGzoHsz',
+      appKey     : '0V7s0VcSblbwT2CYgO9UYoQi',
+      placeholder: "you can commit here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
