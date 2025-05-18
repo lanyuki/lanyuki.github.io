@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"lanyuki.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1、试了新的一些模型，首先是用sglang还是什么框架跑了一下minicpmv2.6，然后偶然间发现minicpmv2.6这个“中”模型，试了几次对话，还不错？还蛮有意思。">
+  <meta name="description" content="试了新的一些模型，首先是用sglang框架跑了一下minicpmv2.6，然后试了几次对话，偶然间发现minicpmv2.6这个“中”模型，还不错？还蛮有意思。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="4&#x2F;5月回顾">
 <meta property="og:url" content="http://lanyuki.github.io/2025/05/07/4-5%E6%9C%88%E5%9B%9E%E9%A1%BE/index.html">
 <meta property="og:site_name" content="lanking&#39;s website">
-<meta property="og:description" content="1、试了新的一些模型，首先是用sglang还是什么框架跑了一下minicpmv2.6，然后偶然间发现minicpmv2.6这个“中”模型，试了几次对话，还不错？还蛮有意思。">
+<meta property="og:description" content="试了新的一些模型，首先是用sglang框架跑了一下minicpmv2.6，然后试了几次对话，偶然间发现minicpmv2.6这个“中”模型，还不错？还蛮有意思。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-07T05:46:51.000Z">
-<meta property="article:modified_time" content="2025-05-07T05:56:50.366Z">
+<meta property="article:modified_time" content="2025-05-18T12:26:42.492Z">
 <meta property="article:author" content="lanking">
 <meta property="article:tag" content="碎碎念">
 <meta name="twitter:card" content="summary">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-05-07 13:46:51 / 修改时间：13:56:50" itemprop="dateCreated datePublished" datetime="2025-05-07T13:46:51+08:00">2025-05-07</time>
+              <time title="创建时间：2025-05-07 13:46:51" itemprop="dateCreated datePublished" datetime="2025-05-07T13:46:51+08:00">2025-05-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-05-18 20:26:42" itemprop="dateModified" datetime="2025-05-18T20:26:42+08:00">2025-05-18</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -222,9 +228,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>1、试了新的一些模型，首先是用sglang还是什么框架跑了一下minicpmv2.6，然后偶然间发现minicpmv2.6这个“中”模型，试了几次对话，还不错？还蛮有意思。</p>
+        <p>试了新的一些模型，首先是用sglang框架跑了一下minicpmv2.6，然后试了几次对话，偶然间发现minicpmv2.6这个“中”模型，还不错？还蛮有意思。</p>
 <span id="more"></span>
-<p>往上面加了一些模块，效果不降就是胜利。<br>————————————————分割线———————————————————<br>效果有大降低<br>————————————————分割线———————————————————<br>ms-swift的eval端写的有点问题，应该不是模型的问题。<br>lora效果比full要稳，有点倒反天罡。不过想来也是，现在需要一个“部分过拟合”的模型，full有点太过拟合了，训练不太稳定。<br>————————————————分割线———————————————————<br>开始赶论文，还有一个礼拜不到。。<br>————————————————分割线———————————————————<br>这图画的有点抽象，管他呢，先画出来再说。<br>————————————————分割线———————————————————<br>emmm，开逃，库库写，有点悬了，这实验和introduction写的就依托大便。</p>
+<p>往上面加了一点模块，效果不降就是胜利。疯狂的魔改ing。。。<br>————————————————分割线———————————————————<br>改出来了，效果点差哇。还有速度有点问题，A800*2要整整三天。。。evalscope的评测也有点慢哇。先把flash attn2什么的打上试试吧<br>————————————————分割线———————————————————<br>evalscope的eval端写的有点问题，应该不是模型的问题，提issue也是半死不活，让我直接在这个框架下对比，我。。。有点无语。。。<br>lora效果比full要稳，有点倒反天罡。不过想来也是，现在需要一个“部分过拟合”的模型，full有点太过拟合了，训练不太稳定。<br>————————————————分割线———————————————————<br>开始赶论文，还有一个礼拜不到。。<br>————————————————分割线———————————————————<br>这图画的有点抽象，管他呢，先画出来再说。<br>————————————————分割线———————————————————<br>emmm，开逃，库库写，有点悬了，这实验和introduction写的依托。这篇如果水完就直接转到RL，这个方向真的有点坐牢哇，能想到的、没想到的全都被做了，然后点也全都刷的很高，根本没有很想做的项目哇。<br>————————————————分割线———————————————————<br>最后还是没有赶上。。。但也没有太过于失望，毕竟这个实验从有想法到现在满打满算也就两个月，真正改代码可能也就改了一周，跑实验加禄写论文加起来就花了半个月，确实有点赶。这一两个月过得十分的充实，基本上把流行的开源的、不开源的多模态大模型和主流的并发、训练、评测的框架试了个遍<br>llama<br>llava<br>minicpmv<br>internVL<br>mplug<br>同时也很快的熟悉了视频的情感描述的这一个方向（夕阳）。。。直观的对于大模型做这种传统的任务，在传统的机器翻译指标（B-4，meteor…）上的性能有了一些了解，确实是有一些离谱了，肉眼看可能结果感觉还不错，但是实际的分数真的有点惨不忍睹，基本上就是倒退5年的水平（学长的含金量还在上升）。<br>另外差不多十天时间把LaTeX的公式和图表都熟悉了一遍，感觉LaTeX和markdown差不多。要不以后博客转LaTeX写算了。<br>跟学长聊了聊，B4这种指标确实是有点emm，因为现在的LLM的词汇可能根本没有进入到B4的词汇表里面，然后导致可能B4的分数会很低，但是实际上可能LLM的输出还是不错的，所以现在这个方向可能需要一些新的指标，比如用一些人类标注的数据，然后通过一些方法（比如对比学习）来评估LLM的输出质量，而不是用传统的机器翻译指标。但是一方面这种不是我所能够解决的，新的指标设计出来也没法和之前的对比了，何况这又是一个已经快死的方向（学长话），另一方面这种指标我认为语言也是在不断地变化的，语言的量化真的有意思哇，个人感觉有点“伪命题”。<br>不管了哇，先摆一会吧。<br>————————————————分割线———————————————————<br>妈妈体检查出来了一些结节，好像要做个小手术哇，反正学校里也没事，正好请个假回家去陪她做个手术吧，四天请假凑个十天的五一假期！<br>————————————————分割线———————————————————<br>emmm。。。怎么又能够认识主任医师的。。。票都候补到了不要我回去。<br>————————————————分割线———————————————————<br>这一年真的过的蛮梦幻的，从一个啥也不懂的，到现在算是刚刚入门了吧。2024年的学术界也是蛮精彩的，4567月份的多模态的大发展，开源的多模态差不多真的有GPT系列的水平了，然后还有什么知识图谱RAG，什么Moe，什么旧事重提的RL，哪个提出来基本都是一批论文哇。现在看貌似Deepseek爆火到现在这一差不多半年基本上真的没有多少新的创新哇，看新的论文基本上都没有什么复现的愿望，要么就是一些炒冷饭的论文，要么就是一些故作高深把以一个概念讲的天花乱坠，结果发现就是那么点东西，确实感觉这半年没啥好看的哇，希望能有论文来打我脸吧。</p>
 
     </div>
 
