@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"lanyuki.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。又开始想是不是算子还是哪里把显存写漏了或者怎么了，又开始排。。。排了一两天，无果。又复习去了">
+  <meta name="description" content="清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一次“虚假”的OOM排查">
 <meta property="og:url" content="http://lanyuki.github.io/2026/04/20/%E4%B8%80%E6%AC%A1%E2%80%9C%E8%99%9A%E5%81%87%E2%80%9D%E7%9A%84OOM%E6%8E%92%E6%9F%A5/index.html">
 <meta property="og:site_name" content="lanking&#39;s website">
-<meta property="og:description" content="清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。又开始想是不是算子还是哪里把显存写漏了或者怎么了，又开始排。。。排了一两天，无果。又复习去了">
+<meta property="og:description" content="清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s41.ax1x.com/2026/04/20/pecop8I.png">
 <meta property="og:image" content="https://s41.ax1x.com/2026/04/20/peco92t.png">
 <meta property="article:published_time" content="2026-04-20T03:19:13.000Z">
-<meta property="article:modified_time" content="2026-04-20T04:31:33.482Z">
+<meta property="article:modified_time" content="2026-04-20T04:35:58.278Z">
 <meta property="article:author" content="lanking">
 <meta property="article:tag" content="-命令">
 <meta name="twitter:card" content="summary">
@@ -188,7 +188,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-04-20 11:19:13 / 修改时间：12:31:33" itemprop="dateCreated datePublished" datetime="2026-04-20T11:19:13+08:00">2026-04-20</time>
+              <time title="创建时间：2026-04-20 11:19:13 / 修改时间：12:35:58" itemprop="dateCreated datePublished" datetime="2026-04-20T11:19:13+08:00">2026-04-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -225,7 +225,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。又开始想是不是算子还是哪里把显存写漏了或者怎么了，又开始排。。。排了一两天，无果。又复习去了，后来汇报时提到了这个问题，此时还没有怀疑是进程占着，为什么呢，因为学校的hpc在经历了寒假的大升级后，简直就难用的一坨，本来chess&#x2F;generic可以很简单的交作业，现在变成了习惯性的先写一个脚本去占满节点，导致要nvidia-smi只能ssh或者attach到任务上之后再去看（后来操作证明没办法ssh，只能附上去）。再加上我一看squeue和hpc自带的监控（这里又要吐槽这个监控了，显存的显示跟闹着玩一样，实际70g，居然显示0%），没有任何的任务且显存占用0，仍然怀疑自己的代码是不是哪里把显存写漏了。直到周末汇报跟老师聊起来，恰好第二天周一有课，可以逃课去实验室debug（不是，说起是不是有其他人占着，此时仍然不信，想着不应该哇。于是周一就直接大规模回档，直接回档到了消融前，还是不行，此时，虽然已经有点怀疑是有人占着了，但是还是仔仔细细查了几遍代码。最后实在没办法了，找了个奇奇怪怪的方法：<br>附着到任务上<br>srun –jobid&#x3D;<JOB_ID> –overlap –pty bash<br>然后看是哪些进程<br>nvidia-smi -q -d PIDS<br>找到后查户口<br>ps aux | grep 1238618<br>最终发现是生科的人在跑。。。。无语，遂联系老师。。。。<br><a target="_blank" rel="noopener" href="https://imgchr.com/i/pecop8I"><img src="https://s41.ax1x.com/2026/04/20/pecop8I.png" alt="pecop8I.png"></a><br><a target="_blank" rel="noopener" href="https://imgchr.com/i/peco92t"><img src="https://s41.ax1x.com/2026/04/20/peco92t.png" alt="peco92t.png"></a><br>最后也是怪我自己，没有尽早地查nvidia -smi，导致浪费了好多时间。</p>
+        <p>清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。</p>
+<span id="more"></span>又开始想是不是算子还是哪里把显存写漏了或者怎么了，又开始排。。。排了一两天，无果。又复习去了，后来汇报时提到了这个问题，此时还没有怀疑是进程占着，为什么呢，因为学校的hpc在经历了寒假的大升级后，简直就难用的一坨，本来chess/generic可以很简单的交作业，现在变成了习惯性的先写一个脚本去占满节点，导致要nvidia-smi只能ssh或者attach到任务上之后再去看（后来操作证明没办法ssh，只能附上去）。再加上我一看squeue和hpc自带的监控（这里又要吐槽这个监控了，显存的显示跟闹着玩一样，实际70g，居然显示0%），没有任何的任务且显存占用0，仍然怀疑自己的代码是不是哪里把显存写漏了。直到周末汇报跟老师聊起来，恰好第二天周一有课，可以逃课去实验室debug（不是，说起是不是有其他人占着，此时仍然不信，想着不应该哇。于是周一就直接大规模回档，直接回档到了消融前，还是不行，此时，虽然已经有点怀疑是有人占着了，但是还是仔仔细细查了几遍代码。最后实在没办法了，找了个奇奇怪怪的方法：
+<p>附着到任务上<br>srun –jobid&#x3D;<JOB_ID> –overlap –pty bash<br>然后看是哪些进程<br>nvidia-smi -q -d PIDS<br>找到后查户口<br>ps aux | grep 1238618<br>最终发现是生科的人在跑。。。。无语，遂联系老师。。。。<br><a target="_blank" rel="noopener" href="https://imgchr.com/i/pecop8I"><img src="https://s41.ax1x.com/2026/04/20/pecop8I.png" alt="pecop8I.png"></a><br><a target="_blank" rel="noopener" href="https://imgchr.com/i/peco92t"><img src="https://s41.ax1x.com/2026/04/20/peco92t.png" alt="peco92t.png"></a><br>最后也是怪我自己，没有尽早地查nvidia -smi，导致浪费了好多时间。</p>
 
     </div>
 

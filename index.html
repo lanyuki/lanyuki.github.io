@@ -180,7 +180,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2026-04-20 11:19:13 / 修改时间：12:31:33" itemprop="dateCreated datePublished" datetime="2026-04-20T11:19:13+08:00">2026-04-20</time>
+              <time title="创建时间：2026-04-20 11:19:13 / 修改时间：12:35:58" itemprop="dateCreated datePublished" datetime="2026-04-20T11:19:13+08:00">2026-04-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -217,8 +217,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。又开始想是不是算子还是哪里把显存写漏了或者怎么了，又开始排。。。排了一两天，无果。又复习去了，后来汇报时提到了这个问题，此时还没有怀疑是进程占着，为什么呢，因为学校的hpc在经历了寒假的大升级后，简直就难用的一坨，本来chess&#x2F;generic可以很简单的交作业，现在变成了习惯性的先写一个脚本去占满节点，导致要nvidia-smi只能ssh或者attach到任务上之后再去看（后来操作证明没办法ssh，只能附上去）。再加上我一看squeue和hpc自带的监控（这里又要吐槽这个监控了，显存的显示跟闹着玩一样，实际70g，居然显示0%），没有任何的任务且显存占用0，仍然怀疑自己的代码是不是哪里把显存写漏了。直到周末汇报跟老师聊起来，恰好第二天周一有课，可以逃课去实验室debug（不是，说起是不是有其他人占着，此时仍然不信，想着不应该哇。于是周一就直接大规模回档，直接回档到了消融前，还是不行，此时，虽然已经有点怀疑是有人占着了，但是还是仔仔细细查了几遍代码。最后实在没办法了，找了个奇奇怪怪的方法：<br>附着到任务上<br>srun –jobid&#x3D;<JOB_ID> –overlap –pty bash<br>然后看是哪些进程<br>nvidia-smi -q -d PIDS<br>找到后查户口<br>ps aux | grep 1238618<br>最终发现是生科的人在跑。。。。无语，遂联系老师。。。。<br><a target="_blank" rel="noopener" href="https://imgchr.com/i/pecop8I"><img src="https://s41.ax1x.com/2026/04/20/pecop8I.png" alt="pecop8I.png"></a><br><a target="_blank" rel="noopener" href="https://imgchr.com/i/peco92t"><img src="https://s41.ax1x.com/2026/04/20/peco92t.png" alt="peco92t.png"></a><br>最后也是怪我自己，没有尽早地查nvidia -smi，导致浪费了好多时间。</p>
-
+          <p>清明回来刚刚改完前一篇文章的response，然后稍微小小摆烂一会，去学了一会的高数和408（插一嘴，真难哇），然后被push着改第二篇，改着改着想着要不再加点实验吧，然后就开始往上面加实验，加完一跑，我去，OOM。心想，糟了，该不会是重复load了两次模型导致的吧，遂开始排查，排了半天也没发现问题在哪里。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/04/20/%E4%B8%80%E6%AC%A1%E2%80%9C%E8%99%9A%E5%81%87%E2%80%9D%E7%9A%84OOM%E6%8E%92%E6%9F%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -260,10 +267,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-04-16 21:24:57 / 修改时间：21:30:42" itemprop="dateCreated datePublished" datetime="2026-04-16T21:24:57+08:00">2026-04-16</time>
+              <time title="创建时间：2026-04-16 21:24:57" itemprop="dateCreated datePublished" datetime="2026-04-16T21:24:57+08:00">2026-04-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-04-20 12:36:13" itemprop="dateModified" datetime="2026-04-20T12:36:13+08:00">2026-04-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -299,8 +312,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>最近碰到了一些事，想要吐槽一下，或许有一些偏见与个人的局限性，也不知道从何说起，想到哪写到哪。佬友们轻点喷。<br>主包是个双非的老登学生，现在发现实验室内的一些新生甚至研究生新生对于人工智能的学习都非常浮躁，上来什么理论也不学，论文也不读，有什么东西全都是对着gpt先过一遍，gpt说怎么样就怎么样，直接交给codex&#x2F;cursor等等vibe coding去库库一顿改，具体改了啥也不知道，为什么要改也不知道，就是一顿改，改完不行就接着改。实在不行了开始来找主包或者老师要想法，偶然碰上一个稍好的结果就看似谦虚地开始大吹特吹make great progress。然后到了写论文的时候又开始哑火，不知道怎么写，就对着gpt开始改前面的人的论文，要不就是跟写课程报告一样，恨不得把所有的code全部写进论文里面一个网络几维输入输出全写进去。要么就是对着gpt把前人的论文排列又组合，看不出来是哪里有什么不一样。然后写着写着开始琢磨怎么造假，怀疑是不是前人的工作造假，关键还时不时问老师问主包，这个灰色地带能不能这样做能不能那样做。主包寻思虽然ai论文确实做手脚的地方很多，但是台面上起手就怀疑前人工作造假是不是有点太…不应该先尝试去做做么，至少做个一两天不行再说哇，而不是中午发现不太对，然后睡完午觉就开始各种问能不能在灰色地带做点小动作…最最关键是问了也没啥用，哪怕主包说不可以做小动作，就真乖乖不做了么？问了又不会影响他的行为，那问了有什么意义呢？<br>另外，主包现在也是基本上对着gpt或者哈基米想想法，手搓代码也很少了，但是主包认为这样干的前提是知道自己到底想要什么想做什么东西。主包之前大一是真真实实啃了好久的李沐花书小土堆等的基础，现在看来虽然比较低效，但是仍然是有必要的，至少基础得要学，至于怎么学，可以在实操的过程中不断地补，需要什么就去学，看博客也好，看各种视频也好，哪怕和gpt聊聊基础也好。而不是上来直接代码大体是干什么的也不看，直接问一句“如何运行”，然后把ai给出的代码直接塞进终端，出问题了再来。跑通了直接问一句“可不可以在上面加什么创新点？”，然后等着ai改完再跑通。到最后自己可能代码都一眼没看过，具体干了啥也不知道，结果好就开始大吹特吹。然后论文再洗一遍稿，overview图可能都是大香蕉生成的，然后又开始沾沾自喜，我又完成了一篇！<br>主包知道学术圈烂，但是主包觉得应该是仅限于烂人和快要毕业的人，新生上来就这么干着实是有点把主包三观震碎了，也许真的是主包现在真的成了老登，思想有点迂腐了吧。<br>最后，此帖仅图一乐，现实中没有发生。阳春三月，天气正好，看完出去逛逛。<br>                                                                     –本文最早于2026年4月14日发于L站。</p>
-
+          <p>最近碰到了一些事，想要吐槽一下，或许有一些偏见与个人的局限性，也不知道从何说起，想到哪写到哪。佬友们轻点喷。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/04/16/%E8%81%8A%E8%81%8A%E6%9C%80%E8%BF%91%E7%9A%84%E5%85%B3%E4%BA%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AD%A6%E4%B9%A0%E7%9A%84%E9%A3%8E%E6%B0%94/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
